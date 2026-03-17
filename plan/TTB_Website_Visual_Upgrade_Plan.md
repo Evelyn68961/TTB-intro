@@ -2,7 +2,8 @@
 
 > **Purpose:** A portable roadmap for upgrading the "What is TTB?" page (and beyond) from text-heavy to visually interactive. Reference this in any Claude chat to stay on track.
 >
-> **Created:** 2026-03-17
+> **Created:** 2026-03-17  
+> **Last updated:** 2026-03-17  
 > **Project:** ttb-intro-website (React + Vite + React Router, deployed on Vercel)
 
 ---
@@ -11,26 +12,37 @@
 
 The site has 4 working pages: Home, What is TTB?, Methodology, Applications (with 5 drug sub-components). All pages use a consistent design system: `#1e3a5f` navy, `#f8fafc` background, `#fffefb` card surfaces, subtle box shadows, system font stack.
 
-The content is solid but the presentation is all text — white cards with paragraphs. No diagrams, no interactive elements, no visual breaks. This is the main thing to fix.
+The "What is TTB?" page now has its first interactive visual component integrated. More to come.
 
 ---
 
 ## Phase 1: Visual Components for "What is TTB?" Page
 
-### Component 1: SurvivalCurveDiagram ✅ BUILT
+### Component 1: SurvivalCurveDiagram ✅ COMPLETE & INTEGRATED
 
-- **File:** `src/components/SurvivalCurveDiagram.jsx` + `.css`
+- **Files:** `src/components/SurvivalCurveDiagram.jsx` + `.css`
 - **What it does:** Pure SVG showing two Weibull survival curves (treatment vs control) with:
-  - Shaded ARR gap between curves
-  - Clickable threshold buttons (0.5%, 1.0%, 2.0%)
-  - TTB marker that shifts when threshold changes
-  - Result callout explaining what TTB means at each threshold
+  - Treatment = solid blue line (upper), Control = dashed grey line (lower)
+  - Shaded blue ARR gap between the full length of both curves
+  - Clickable threshold buttons (0.5%, 1.0%, 2.0%) — all in a blue gradient (light → deep blue)
+  - TTB marker + ARR bracket that shifts when threshold changes
 - **Tech:** Pure SVG + React useState/useMemo. No external dependencies.
-- **Weibull params:** Conceptual (shape=1.08, scale_treatment=120, scale_control=90). NOT real GLP-1 RA data.
-- **Where in page:** Inside "What TTB Actually Measures" section, BEFORE the ARR thresholds table.
-- **Status:** Component files created. Need to: (1) place files in `src/components/`, (2) import in WhatIsTTB.jsx, (3) test locally.
+- **Weibull params:** Conceptual (shape=1.15, scale_treatment=105, scale_control=72, max_time=8). NOT real GLP-1 RA data.
+- **State lifted to parent:** `selectedIdx` and `setSelectedIdx` live in `WhatIsTTB.jsx`, passed as props to the diagram. This allows the callout text in the right column to also react to threshold changes.
+- **Layout:** Flex layout (`ttb-measure-layout` class in WhatIsTTB.css) — diagram on left (60%), table + callout on right (35%). Table shows ARR thresholds, callout dynamically updates with selected threshold info. Right column has `padding-top` to vertically align with the diagram.
+- **Colors:** Threshold buttons use blue gradient: `#93c5fd` (0.5%), `#60a5fa` (1.0%), `#3b82f6` (2.0%)
+- **Status:** ✅ Fully built, integrated, and styled.
 
-### Component 2: PatientComparison
+**Lessons learned during build:**
+- S(t) labels at the ARR bracket were unreadable at small thresholds (0.5%) — removed them, kept only ARR label
+- ARR label position: use `y={ttbYTreat - 8}` (above treatment curve) instead of midpoint between curves to avoid cramping
+- Weibull params needed tuning: closer scale values (105 vs 72) with shorter x-axis (8 months) and tighter y-range (0.90-1.00) to fill the plot area
+- SVG legend lines: `y1` and `y2` must match for horizontal lines (accidentally made them diagonal)
+- State lifting pattern: THRESHOLDS array must be defined BEFORE `const selected = THRESHOLDS[selectedIdx]` — order matters with `const`
+- THRESHOLDS defined in both files — keep them in sync or export from one source
+- Use CSS classes over inline styles (can add media queries, keeps JSX clean), except for dynamic values from React state
+
+### Component 2: PatientComparison ← **NEXT**
 
 - **File:** `src/components/PatientComparison.jsx` + `.css`
 - **What it does:** Side-by-side visual cards for Patient A (52yo) vs Patient B (84yo) with:
@@ -82,10 +94,10 @@ Section: "Why Timing Matters"
   → <PatientComparison />          ← COMPONENT 2
   → Brief concluding text
 
-Section: "What TTB Actually Measures"
+Section: "What TTB Actually Measures"         ✅ DONE
   → Intro paragraph about ARR
-  → <SurvivalCurveDiagram />       ← COMPONENT 1 ✅
-  → ARR thresholds table (keep existing)
+  → Flex layout: <SurvivalCurveDiagram /> (left) + table & callout (right)
+  → Closing paragraph about threshold choice
 
 Section: "TTB vs NNT"
   → <TTBvsNNT />                   ← COMPONENT 4
@@ -162,6 +174,8 @@ Missing any one of these = blank page or broken navigation.
 | Interactivity level | Clickable thresholds | More educational than scroll animation. Uses React useState pattern. Reader explores actively. |
 | Component architecture | Separate files in `src/components/` | Reusable (e.g., SurvivalCurveDiagram could appear on Demo page), shows good portfolio architecture. |
 | D3.js | Not now | Overkill for explanatory diagrams. Save for NMA Website project (force-directed graphs). |
+| CSS over inline styles | CSS classes in `.css` files | Supports media queries for responsive, keeps JSX clean. Inline only for dynamic state-driven values. |
+| State lifting | `selectedIdx` in parent | Allows callout in right column to react to threshold clicks in diagram. Same pattern as Arrhythmia Guide language toggle. |
 
 ---
 
@@ -172,12 +186,15 @@ Missing any one of these = blank page or broken navigation.
 - **Drug/disease names stay in English** in both language versions (if bilingual is added later).
 - **Complete files over incremental patches** when under time pressure.
 - **Test locally after each component** before moving to the next.
+- **Use DevTools to experiment with CSS values** before writing them into files.
+- **`const` declaration order matters** — can't reference a variable before it's defined.
+- **SVG lines need matching y1/y2 for horizontal** — different values = diagonal line.
 
 ---
 
 ## Build Order
 
-1. ~~SurvivalCurveDiagram~~ ✅ Built
+1. ~~SurvivalCurveDiagram~~ ✅ Complete & integrated
 2. PatientComparison ← **NEXT**
 3. ScenarioCards
 4. TTBvsNNT

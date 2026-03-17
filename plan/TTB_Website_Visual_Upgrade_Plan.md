@@ -12,26 +12,33 @@
 
 The site has 4 working pages: Home, What is TTB?, Methodology, Applications (with 5 drug sub-components). All pages use a consistent design system: `#1e3a5f` navy, `#f8fafc` background, `#fffefb` card surfaces, subtle box shadows, system font stack.
 
-The "What is TTB?" page now has its first interactive visual component integrated. More to come.
+The "What is TTB?" page now has its first interactive visual component fully integrated and cleaned up.
 
 ---
 
 ## Phase 1: Visual Components for "What is TTB?" Page
 
-### Component 1: SurvivalCurveDiagram ✅ COMPLETE & INTEGRATED
+### Component 1: SurvivalCurveDiagram ✅ COMPLETE, INTEGRATED & CLEANED UP
 
 - **Files:** `src/components/SurvivalCurveDiagram.jsx` + `.css`
 - **What it does:** Pure SVG showing two Weibull survival curves (treatment vs control) with:
-  - Treatment = solid blue line (upper), Control = dashed grey line (lower)
+  - Treatment = solid blue (`#2964c3`) line (upper), Control = dashed grey (`#94a3b8`) line (lower)
   - Shaded blue ARR gap between the full length of both curves
   - Clickable threshold buttons (0.5%, 1.0%, 2.0%) — all in a blue gradient (light → deep blue)
   - TTB marker + ARR bracket that shifts when threshold changes
-- **Tech:** Pure SVG + React useState/useMemo. No external dependencies.
-- **Weibull params:** Conceptual (shape=1.15, scale_treatment=105, scale_control=72, max_time=8). NOT real GLP-1 RA data.
-- **State lifted to parent:** `selectedIdx` and `setSelectedIdx` live in `WhatIsTTB.jsx`, passed as props to the diagram. This allows the callout text in the right column to also react to threshold changes.
-- **Layout:** Flex layout (`ttb-measure-layout` class in WhatIsTTB.css) — diagram on left (60%), table + callout on right (35%). Table shows ARR thresholds, callout dynamically updates with selected threshold info. Right column has `padding-top` to vertically align with the diagram.
+  - Result callout moved to parent's right column (state lifted)
+- **Tech:** Pure SVG + React useMemo. No external dependencies. `useState` removed from component (state lives in parent).
+- **Weibull params:** Conceptual (shape=1.15, scale_treatment=105, scale_control=72, max_time=8, y_range=0.90-1.00). NOT real GLP-1 RA data.
+- **State lifting:** `selectedIdx` and `setSelectedIdx` live in `WhatIsTTB.jsx`, passed as props. THRESHOLDS exported from `SurvivalCurveDiagram.jsx` via `export const THRESHOLDS` and imported in parent via `import SurvivalCurveDiagram, { THRESHOLDS } from ...` — single source of truth.
+- **Layout:** Flex layout (`ttb-measure-layout` class in WhatIsTTB.css) — diagram on left (60%), table + callout on right (35%). Table shows ARR thresholds, callout dynamically updates with selected threshold info. Right column has `padding-top: 80px` and `padding-right: 40px`.
 - **Colors:** Threshold buttons use blue gradient: `#93c5fd` (0.5%), `#60a5fa` (1.0%), `#3b82f6` (2.0%)
-- **Status:** ✅ Fully built, integrated, and styled.
+- **Status:** ✅ Fully built, integrated, styled, and code cleaned up.
+
+**Code cleanup completed:**
+- Removed trailing space in `#60a5fa` color value (was `'#60a5fa '`)
+- Removed unused `useState` import from SurvivalCurveDiagram.jsx
+- THRESHOLDS exported as named export — single source of truth across files
+- Outdated comments updated
 
 **Lessons learned during build:**
 - S(t) labels at the ARR bracket were unreadable at small thresholds (0.5%) — removed them, kept only ARR label
@@ -39,8 +46,10 @@ The "What is TTB?" page now has its first interactive visual component integrate
 - Weibull params needed tuning: closer scale values (105 vs 72) with shorter x-axis (8 months) and tighter y-range (0.90-1.00) to fill the plot area
 - SVG legend lines: `y1` and `y2` must match for horizontal lines (accidentally made them diagonal)
 - State lifting pattern: THRESHOLDS array must be defined BEFORE `const selected = THRESHOLDS[selectedIdx]` — order matters with `const`
-- THRESHOLDS defined in both files — keep them in sync or export from one source
 - Use CSS classes over inline styles (can add media queries, keeps JSX clean), except for dynamic values from React state
+- Use DevTools to experiment with spacing/sizing values before writing them into CSS
+- Named exports (`export const`) allow importing both default and named from same file
+- Watch for trailing spaces in string values — `'#60a5fa '` vs `'#60a5fa'` can cause subtle bugs
 
 ### Component 2: PatientComparison ← **NEXT**
 
@@ -176,6 +185,7 @@ Missing any one of these = blank page or broken navigation.
 | D3.js | Not now | Overkill for explanatory diagrams. Save for NMA Website project (force-directed graphs). |
 | CSS over inline styles | CSS classes in `.css` files | Supports media queries for responsive, keeps JSX clean. Inline only for dynamic state-driven values. |
 | State lifting | `selectedIdx` in parent | Allows callout in right column to react to threshold clicks in diagram. Same pattern as Arrhythmia Guide language toggle. |
+| Named exports | `export const THRESHOLDS` | Single source of truth. Import in parent via `import Component, { THRESHOLDS } from ...`. Avoids duplicate data across files. |
 
 ---
 
@@ -189,12 +199,14 @@ Missing any one of these = blank page or broken navigation.
 - **Use DevTools to experiment with CSS values** before writing them into files.
 - **`const` declaration order matters** — can't reference a variable before it's defined.
 - **SVG lines need matching y1/y2 for horizontal** — different values = diagonal line.
+- **Watch for trailing spaces in string values** — `'#60a5fa '` vs `'#60a5fa'` can cause subtle bugs.
+- **Named exports for shared constants** — `export const` from source file, import via `{ name }` in consumers.
 
 ---
 
 ## Build Order
 
-1. ~~SurvivalCurveDiagram~~ ✅ Complete & integrated
+1. ~~SurvivalCurveDiagram~~ ✅ Complete, integrated & cleaned up
 2. PatientComparison ← **NEXT**
 3. ScenarioCards
 4. TTBvsNNT

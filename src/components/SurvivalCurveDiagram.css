@@ -1,0 +1,131 @@
+/* ============================================================
+ * SurvivalCurveDiagram.css
+ * 
+ * Styles for the interactive survival curve diagram.
+ * Follows the existing site pattern:
+ *   - #1e3a5f navy for primary color
+ *   - #f8fafc light background
+ *   - #fffefb card background
+ *   - Subtle box shadows
+ *   - System font stack
+ * ============================================================ */
+
+.survival-diagram-wrapper {
+  margin: 28px 0;
+  padding: 28px 24px;
+  background-color: #fffefb;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+/* --- Threshold selector buttons --- */
+.threshold-selector {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.threshold-label {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #475569;
+}
+
+.threshold-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.threshold-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 8px 20px;
+  border: 2px solid var(--btn-color);
+  border-radius: 8px;
+  background: var(--btn-bg);
+  color: var(--btn-color);
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.threshold-btn.active {
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.threshold-btn:not(.active):hover {
+  background: color-mix(in srgb, var(--btn-color) 10%, transparent);
+}
+
+.nnt-label {
+  font-size: 0.72rem;
+  font-weight: 500;
+  opacity: 0.8;
+  letter-spacing: 0.02em;
+}
+
+/* --- SVG container --- */
+.survival-svg {
+  width: 100%;
+  max-width: 600px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Smooth transition when switching thresholds */
+.ttb-line,
+.arr-shaded-area {
+  transition: all 0.35s ease;
+}
+
+/* --- Result callout box --- */
+.ttb-result-callout {
+  margin-top: 20px;
+  padding: 16px 20px;
+  border-left: 4px solid;
+  border-radius: 0 8px 8px 0;
+  background-color: #f8fafc;
+  transition: border-color 0.3s ease;
+}
+
+.ttb-result-callout p {
+  margin: 0 0 6px 0;
+  font-size: 1.1rem;
+  color: #1a202c;
+  line-height: 1.6;
+}
+
+.ttb-result-callout p:last-child {
+  margin-bottom: 0;
+}
+
+.callout-hint {
+  font-size: 0.88rem !important;
+  color: #94a3b8 !important;
+  font-style: italic;
+}
+
+/* --- Responsive --- */
+@media (max-width: 640px) {
+  .threshold-selector {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .threshold-btn {
+    padding: 6px 14px;
+    font-size: 0.9rem;
+  }
+
+  .survival-diagram-wrapper {
+    padding: 20px 16px;
+  }
+}

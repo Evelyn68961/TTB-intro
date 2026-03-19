@@ -12,7 +12,7 @@
 
 The site has 4 working pages: Home, What is TTB?, Methodology, Applications (with 5 drug sub-components). All pages use a consistent design system: `#1e3a5f` navy, `#f8fafc` background, `#fffefb` card surfaces, subtle box shadows, system font stack.
 
-The "What is TTB?" page now has its first interactive visual component fully integrated and cleaned up.
+The "What is TTB?" page now has two visual components integrated: SurvivalCurveDiagram (interactive threshold exploration) and PatientComparison (segmented timeline bars showing benefit vs cost for two patient profiles). Two more components remain for Phase 1.
 
 ---
 
@@ -51,18 +51,31 @@ The "What is TTB?" page now has its first interactive visual component fully int
 - Named exports (`export const`) allow importing both default and named from same file
 - Watch for trailing spaces in string values — `'#60a5fa '` vs `'#60a5fa'` can cause subtle bugs
 
-### Component 2: PatientComparison ← **NEXT**
+### Component 2: PatientComparison ✅ BUILT
 
-- **File:** `src/components/PatientComparison.jsx` + `.css`
-- **What it does:** Side-by-side visual cards for Patient A (52yo) vs Patient B (84yo) with:
-  - A horizontal timeline bar in each card
-  - TTB marker on the timeline (e.g., ~24 months)
-  - Life expectancy range shown visually
-  - Green/amber color coding: Patient A has plenty of time (green), Patient B may not benefit (amber)
-  - Clear visual answer: "Will they live long enough to benefit?"
-- **Tech:** HTML/CSS cards with a simple SVG or CSS timeline bar inside each card.
-- **Where in page:** Replaces the current "Why Timing Matters" section's paragraph-based Patient A/B comparison.
-- **Status:** Not built yet.
+- **Files:** `src/components/PatientComparison.jsx` + `.css`
+- **What it does:** Stacked comparison of Patient A (52yo, 30+ yr life expectancy) vs Patient B (84yo, ~3 yr life expectancy) with segmented SVG timeline bars:
+  - **Patient A (benefit reached):** gray "wait" segment (0→TTB) + green "X+ years of benefit" segment (TTB→life end)
+  - **Patient B (benefit NOT reached):** amber "cost" segment (0→life end) + red "life ends" marker + dashed TTB marker past life end + red "never reached" annotation with arrows
+  - Dashed TTB marker on both bars at the same x-position (same scale)
+  - Legend at bottom: green = benefit received, amber = treatment cost no benefit, red = TTB not reached before death
+- **Tech:** `PatientBar` sub-component handles SVG logic. Conditional rendering (`benefitReached ? ... : ...`) drives which segments/markers appear. Inline styles (not CSS classes). Self-contained — no props from parent.
+- **Key constants:** `TTB_MONTHS = 72`, `MAX_YEARS = 32`, `BAR_FULL = 560`, scaling function `yrsToW()`.
+- **Layout:** Stacked (text above bar, not side-by-side). SVG uses `width="100%"` with `viewBox` for responsive scaling. `overflow: "visible"` to allow labels outside SVG bounds.
+- **Where in page:** Inside "Why Timing Matters" section. Old paragraph-based Patient A/B text still below — needs to be removed in integration step.
+- **Status:** ✅ Built and rendering. Still needs: remove old text paragraphs, remove `fontFamily` inline style to match page design system.
+
+**Design decisions made during build:**
+- Fixed TTB (not interactive) — simpler, clearer teaching point. Interactivity lives in SurvivalCurveDiagram instead.
+- Same scale for both bars (both measured against MAX_YEARS=32) — Patient B's bar is dramatically short, showing the contrast.
+- Fictional TTB value (72 months) chosen for visual drama — clearly past Patient B's 36-month life expectancy.
+- Three-color system (green/amber/red) with legend, inspired by mockup reference.
+
+**Lessons learned during build:**
+- SVG `viewBox` and `BAR_FULL` must be coordinated — if bars extend past viewBox, they get clipped (unless `overflow: visible`).
+- `maxWidth` on parent container constrains HTML elements (legend line) but SVG with `overflow: visible` can bleed past — causes mismatched widths.
+- Conditional rendering in `.map()` requires curly braces `{}` not parentheses `()` when you need a `const` before the `return`.
+- Inline styles inside components are harder to override from parent CSS — consider converting to CSS classes later for consistency.
 
 ### Component 3: ScenarioCards
 
@@ -98,9 +111,9 @@ After all 4 components are built, the page structure will be:
 Section: "The Question Clinical Trials Don't Answer"
   → Text (keep as-is, it's punchy and short)
 
-Section: "Why Timing Matters"
+Section: "Why Timing Matters"                ✅ DONE
   → Brief intro text (1-2 sentences)
-  → <PatientComparison />          ← COMPONENT 2
+  → <PatientComparison />          ← COMPONENT 2 ✅
   → Brief concluding text
 
 Section: "What TTB Actually Measures"         ✅ DONE
@@ -207,8 +220,8 @@ Missing any one of these = blank page or broken navigation.
 ## Build Order
 
 1. ~~SurvivalCurveDiagram~~ ✅ Complete, integrated & cleaned up
-2. PatientComparison ← **NEXT**
-3. ScenarioCards
+2. ~~PatientComparison~~ ✅ Built & rendering. Needs: remove old text, style cleanup.
+3. ScenarioCards ← **NEXT**
 4. TTBvsNNT
 5. Integrate all 4 into WhatIsTTB.jsx, cut redundant text sections
 6. Test & deploy

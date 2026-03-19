@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import PatientComparison from '../components/PatientComparison';
 import SurvivalCurveDiagram, { THRESHOLDS } from '../components/SurvivalCurveDiagram';
 import './WhatIsTTB.css';
 
@@ -29,13 +30,14 @@ export default function WhatIsTTB() {
         <section>
             <h2>Why Timing Matters</h2>
             <p>Consider two patients starting the same medication:</p>
+            <PatientComparison selectedIdx={selectedIdx} />
             <p>
             <strong>Patient A</strong> is 52 years old with a life expectancy of 30+ years.
-            If the medication takes 2 years to show benefit, that's a worthwhile investment.
+            If the medication takes 6 years to show benefit, that's a worthwhile investment.
             </p>
             <p>
             <strong>Patient B</strong> is 84 years old with multiple health conditions and
-            a life expectancy of 3 years. If the same medication takes 2 years to help,
+            a life expectancy of 3 years. If the same medication takes 6 years to help,
             she may spend most of her remaining life taking a pill that never benefits
             her — while experiencing side effects, costs, and the daily burden of one
             more medication.

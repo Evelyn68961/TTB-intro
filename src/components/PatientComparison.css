@@ -1,0 +1,13 @@
+.patient-card {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+.patient-card svg {
+    flex: 1;
+}
+
+.patient-info {
+    width: 300px;
+    flex-shrink: 0;
+}

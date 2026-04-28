@@ -9,6 +9,8 @@ const PATIENTS = [
     lifeYears: 30,
     lifeMonths: 360,
     lines: ["52 yrs old", "Life expectancy 30+ yrs"],
+    takeaway:
+      "Plenty of runway to earn benefit. The 6-year wait is a worthwhile investment.",
   },
   {
     name: "Patient B",
@@ -16,6 +18,8 @@ const PATIENTS = [
     lifeYears: 3,
     lifeMonths: 36,
     lines: ["84 yrs old, multimorbid", "Life expectancy ~3 yrs"],
+    takeaway:
+      "Likely to spend her remaining life on a pill that never helps — only side effects, cost, and burden.",
   },
 ];
 
@@ -96,6 +100,34 @@ function PatientBar({ patient, barY }) {
         </>
       ) : (
         <>
+          {/* Ghost "would-have-been" benefit zone — fills empty post-TTB space */}
+          <rect
+            x={ttbX}
+            y={barY}
+            width={BAR_FULL - ttbW}
+            height={barH}
+            rx={barR}
+            fill="#16a34a"
+            fillOpacity={0.14}
+            stroke="#16a34a"
+            strokeOpacity={0.5}
+            strokeDasharray="4 3"
+            strokeWidth={1.1}
+          />
+          <text
+            x={ttbX + (BAR_FULL - ttbW) / 2}
+            y={barY + barH / 2 + 1}
+            textAnchor="middle"
+            dominantBaseline="central"
+            fontSize="12"
+            fontWeight="600"
+            fill="#15803d"
+            fillOpacity={0.75}
+            fontStyle="italic"
+          >
+            benefit zone — never reached
+          </text>
+
           {/* Amber wasted-treatment segment */}
           <rect
             x={BAR_LEFT}
@@ -212,12 +244,15 @@ export default function PatientComparison() {
     <div
       style={{
         fontFamily: "'Inter', system-ui, sans-serif",
-        maxWidth: 1000,
-        padding: "2rem 1.5rem",
+        margin: 0,
+        padding: 0,
       }}
     >
       {PATIENTS.map((patient, i) => (
-        <div key={i} style={{ marginBottom: i === 0 ? "2.5rem" : "1.5rem" }}>
+        <div
+          key={i}
+          style={{ marginBottom: i === 0 ? "1.5rem" : "1rem" }}
+        >
           <div style={{ marginBottom: 12 }}>
             <div
               style={{
@@ -242,70 +277,92 @@ export default function PatientComparison() {
             ))}
           </div>
 
-          <svg
-            width="100%"
-            viewBox="0 0 560 100"
-            style={{ overflow: "visible", display: "block" }}
+          <div
+            style={{
+              display: "flex",
+              gap: "28px",
+              alignItems: "center",
+            }}
           >
-            <defs>
-              <marker
-                id="arrowR"
-                viewBox="0 0 6 6"
-                refX="5"
-                refY="3"
-                markerWidth="5"
-                markerHeight="5"
-                orient="auto"
+            <div style={{ flex: "1 1 0", minWidth: 0 }}>
+              <svg
+                width="100%"
+                viewBox="0 0 560 100"
+                style={{ overflow: "visible", display: "block" }}
               >
-                <path d="M0,0 L6,3 L0,6" fill="#ef4444" />
-              </marker>
-              <marker
-                id="arrowL"
-                viewBox="0 0 6 6"
-                refX="1"
-                refY="3"
-                markerWidth="5"
-                markerHeight="5"
-                orient="auto-start-reverse"
-              >
-                <path d="M6,0 L0,3 L6,6" fill="#ef4444" />
-              </marker>
-            </defs>
-            <PatientBar patient={patient} barY={30} />
-          </svg>
+                <defs>
+                  <marker
+                    id="arrowR"
+                    viewBox="0 0 6 6"
+                    refX="5"
+                    refY="3"
+                    markerWidth="5"
+                    markerHeight="5"
+                    orient="auto"
+                  >
+                    <path d="M0,0 L6,3 L0,6" fill="#ef4444" />
+                  </marker>
+                  <marker
+                    id="arrowL"
+                    viewBox="0 0 6 6"
+                    refX="1"
+                    refY="3"
+                    markerWidth="5"
+                    markerHeight="5"
+                    orient="auto-start-reverse"
+                  >
+                    <path d="M6,0 L0,3 L6,6" fill="#ef4444" />
+                  </marker>
+                </defs>
+                <PatientBar patient={patient} barY={30} />
+              </svg>
+            </div>
+
+            <div
+              style={{
+                flex: "0 0 200px",
+                fontSize: "0.82rem",
+                color: "#475569",
+                lineHeight: 1.5,
+              }}
+            >
+              {patient.takeaway}
+            </div>
+          </div>
         </div>
       ))}
 
       {/* Legend */}
       <div
         style={{
-            display: "flex",
-            gap: "2rem",
-            flexWrap: "wrap",
-            fontSize: "0.95rem",
-            color: "var(--color-text-secondary, #64748b)",
-            borderTop: "1px solid var(--color-border-tertiary, #e2e8f0)",
-            paddingTop: "1rem",
-            marginTop: "1rem",
-            justifyContent: "center",
-            width: "100%",
+          display: "flex",
+          gap: "1.5rem",
+          flexWrap: "wrap",
+          fontSize: "0.9rem",
+          color: "#64748b",
+          borderTop: "1px solid #e2e8f0",
+          paddingTop: "0.9rem",
+          marginTop: "1rem",
+          justifyContent: "flex-start",
+          width: "100%",
         }}
       >
         {[
           { color: "#16a34a", label: "Benefit received" },
           { color: "#f59e0b", label: "Treatment cost, no benefit" },
-          { color: "#ef4444", label: "TTB not reached before death" },
-        ].map(({ color, label }) => (
+          { color: "#16a34a", label: "Benefit zone never reached", ghost: true },
+        ].map(({ color, label, ghost }) => (
           <span
             key={label}
-            style={{ display: "flex", alignItems: "center", gap: 5 }}
+            style={{ display: "flex", alignItems: "center", gap: 6 }}
           >
             <span
               style={{
-                width: 11,
-                height: 11,
+                width: 12,
+                height: 12,
                 borderRadius: 2,
-                background: color,
+                background: ghost ? "transparent" : color,
+                border: ghost ? `1.5px dashed ${color}` : "none",
                 display: "inline-block",
                 opacity: color === "#f59e0b" ? 0.75 : 0.88,
               }}

@@ -3,6 +3,7 @@ import PatientComparison from '../components/PatientComparison';
 import SurvivalCurveDiagram, { THRESHOLDS } from '../components/SurvivalCurveDiagram';
 import TTBvsNNTVisual from '../components/TTBvsNNTVisual';
 import PopulationGrid from '../components/PopulationGrid';
+import WhenTTBMatters from '../components/WhenTTBMatters';
 import './WhatIsTTB.css';
 
 export default function WhatIsTTB() {
@@ -33,18 +34,7 @@ export default function WhatIsTTB() {
             <h2>Why Timing Matters</h2>
             <p>Consider two patients starting the same medication:</p>
             <PatientComparison selectedIdx={selectedIdx} />
-            <p>
-            <strong>Patient A</strong> is 52 years old with a life expectancy of 30+ years.
-            If the medication takes 6 years to show benefit, that's a worthwhile investment.
-            </p>
-            <p>
-            <strong>Patient B</strong> is 84 years old with multiple health conditions and
-            a life expectancy of 3 years. If the same medication takes 6 years to help,
-            she may spend most of her remaining life taking a pill that never benefits
-            her — while experiencing side effects, costs, and the daily burden of one
-            more medication.
-            </p>
-            <p>
+            <p style={{ marginTop: '1.5rem' }}>
             The treatment "works" for both patients in a clinical trial sense. But only
             TTB analysis tells us whether it makes sense for <em>this particular person</em>{" "}
             given their time horizon.
@@ -90,79 +80,10 @@ export default function WhatIsTTB() {
 
         <section>
             <h2>When TTB Matters Most</h2>
-            <p>TTB analysis is especially valuable for:</p>
-            <dl>
-            <dt><strong>Preventive treatments</strong></dt>
-            <dd>
-                Medications taken by healthy people to prevent future events (statins
-                for heart disease, bisphosphonates for fractures). Benefits accumulate
-                slowly; patients need time to "earn" them.
-            </dd>
-
-            <dt><strong>Older adults</strong></dt>
-            <dd>
-                With limited life expectancy, the window to benefit shrinks. A treatment
-                requiring 3 years to help may not make sense for someone with 2 years
-                to live.
-            </dd>
-
-            <dt><strong>High-burden treatments</strong></dt>
-            <dd>
-                Expensive medications, those with significant side effects, or complex
-                regimens. The longer patients must wait for benefit, the harder to
-                justify the burden.
-            </dd>
-
-            <dt><strong>Shared decision-making</strong></dt>
-            <dd>
-                When clinicians and patients weigh treatment options together, TTB
-                provides concrete information: "This medication typically takes about
-                2 years to help. Given your situation, does that timeline make sense
-                for you?"
-            </dd>
-            </dl>
+            <WhenTTBMatters />
         </section>
 
-        <section>
-            <h2>The Clinical Reality</h2>
-            <p>
-            Without TTB information, clinicians often rely on intuition or trial
-            endpoints that don't translate to individual decisions. A patient might
-            be told "this medication reduces your risk by 20%" without understanding
-            that:
-            </p>
-            <ul>
-            <li>
-                That 20% relative reduction might mean going from 5% to 4% absolute risk
-            </li>
-            <li>
-                The benefit doesn't appear immediately — it emerges over months to years
-            </li>
-            <li>
-                Their personal time horizon determines whether they'll ever experience
-                that benefit
-            </li>
-            </ul>
-            <p>TTB makes these conversations concrete and honest.</p>
-        </section>
-
-        <section>
-            <h2>A Growing Body of Research</h2>
-            <p>TTB analysis has been applied to several major medication classes:</p>
-            <ul>
-            <li><strong>Statins</strong> for cardiovascular prevention</li>
-            <li><strong>Bisphosphonates</strong> for fracture prevention in osteoporosis</li>
-            <li><strong>Colchicine</strong> for cardiovascular disease</li>
-            <li><strong>Direct oral anticoagulants</strong> for atrial fibrillation</li>
-            <li><strong>GLP-1 receptor agonists</strong> for cardiovascular protection (emerging research)</li>
-            </ul>
-            <p>
-            Each analysis provides clinicians with practical timelines to guide
-            prescribing decisions, particularly for older patients or those with
-            limited life expectancy.
-            </p>
-        </section>
-        </article>          
+        </article>
     </div>
   );
 }

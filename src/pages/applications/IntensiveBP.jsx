@@ -1,12 +1,26 @@
+import MiniARRChart from '../../components/MiniARRChart';
+
+const INTENSIVE_BP_DATA = [
+  { arr: 0.002, time: 9.1 },
+  { arr: 0.005, time: 19.1 },
+  { arr: 0.010, time: 34.4 },
+];
+
 function IntensiveBP() {
   return (
     <section className="medication-section">
       <h2>Intensive Blood Pressure Treatment</h2>
       <p className="context">
-        Intensive BP treatment (target SBP &lt;140 or &lt;130 mm Hg) reduces 
-        cardiovascular events in adults ≥60 years, but harms like syncope and 
+        Intensive BP treatment (target SBP &lt;140 or &lt;130 mm Hg) reduces
+        cardiovascular events in adults ≥60 years, but harms like syncope and
         falls occur immediately while benefits emerge over time.
       </p>
+      <MiniARRChart
+        data={INTENSIVE_BP_DATA}
+        unit="months"
+        maxTime={48}
+        label="ARR over time — Major adverse CV events"
+      />
       <div className="ttb-results">
         <h3>TTB Estimates (Major Adverse CV Events)</h3>
         <table>

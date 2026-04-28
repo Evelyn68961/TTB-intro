@@ -1,3 +1,4 @@
+import PipelineDiagram from '../components/PipelineDiagram';
 import './Methodology.css';
 
 export default function Methodology() {
@@ -6,19 +7,7 @@ export default function Methodology() {
       <article className="methodology-article">
         <h1>How TTB is Calculated</h1>
 
-        <section>
-          <h2>Overview</h2>
-          <p>
-            Time-to-Benefit analysis transforms clinical trial survival data into 
-            actionable timelines. The process involves four main steps:
-          </p>
-          <ol className="steps-overview">
-            <li>Extract survival data from published Kaplan-Meier (KM) curves</li>
-            <li>Reconstruct individual patient-level data (IPD)</li>
-            <li>Fit parametric survival models (usually Weibull)</li>
-            <li>Calculate when absolute risk reduction (ARR) reaches clinical thresholds</li>
-          </ol>
-        </section>
+        <PipelineDiagram />
 
         <section>
           <h2>Step 1: Extract Survival Data</h2>

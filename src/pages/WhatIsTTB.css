@@ -123,7 +123,7 @@
 .ttb-measure-layout {
   display: flex;
   gap: 24px;
-  align-items: flex-start;
+  align-items: center;
 }
 
 .ttb-measure-layout > :first-child {
@@ -132,7 +132,6 @@
 
 .ttb-measure-layout > :last-child {
   flex: 1 1 35%;
-  padding-top: 80px;
   padding-right: 40px;
 }
 

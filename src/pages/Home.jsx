@@ -1,4 +1,10 @@
 import { Link } from 'react-router-dom';
+import {
+  WhatIsTTBIcon,
+  MethodologyIcon,
+  ApplicationsIcon,
+  DemoIcon,
+} from '../components/HomeCardIcons';
 import './Home.css';
 
 export default function Home() {
@@ -40,31 +46,35 @@ export default function Home() {
         <h2>Explore</h2>
         <div className="feature-grid">
           <Link to="/what-is-ttb" className="feature-card">
-            <h3>What is TTB?</h3>
-            <p>
-              Understand the concept and why it matters for patient care.
-            </p>
+            <div className="card-icon-wrap"><WhatIsTTBIcon /></div>
+            <div className="card-text">
+              <h3>What is TTB?</h3>
+              <p>Understand the concept and why it matters for patient care.</p>
+            </div>
           </Link>
 
           <Link to="/methodology" className="feature-card">
-            <h3>Methodology</h3>
-            <p>
-              Learn how TTB is calculated from clinical trial data.
-            </p>
+            <div className="card-icon-wrap"><MethodologyIcon /></div>
+            <div className="card-text">
+              <h3>Methodology</h3>
+              <p>Learn how TTB is calculated from clinical trial data.</p>
+            </div>
           </Link>
 
           <Link to="/applications" className="feature-card">
-            <h3>Clinical Applications</h3>
-            <p>
-              See TTB estimates for statins, bisphosphonates, GLP-1 RAs, and more.
-            </p>
+            <div className="card-icon-wrap"><ApplicationsIcon /></div>
+            <div className="card-text">
+              <h3>Clinical Applications</h3>
+              <p>See TTB estimates for statins, bisphosphonates, GLP-1 RAs, and more.</p>
+            </div>
           </Link>
 
           <Link to="/demo" className="feature-card">
-            <h3>Interactive Demo</h3>
-            <p>
-              Adjust parameters and see how TTB changes in real-time.
-            </p>
+            <div className="card-icon-wrap"><DemoIcon /></div>
+            <div className="card-text">
+              <h3>Interactive Demo</h3>
+              <p>Adjust parameters and see how TTB changes in real-time.</p>
+            </div>
           </Link>
         </div>
       </section>

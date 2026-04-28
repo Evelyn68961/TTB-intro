@@ -1,12 +1,26 @@
+import MiniARRChart from '../../components/MiniARRChart';
+
+const SGLT2I_DATA = [
+  { arr: 0.002, time: 0.19 },
+  { arr: 0.005, time: 0.66 },
+  { arr: 0.010, time: 1.74 },
+];
+
 function SGLT2i() {
   return (
     <section className="medication-section">
       <h2>SGLT2 Inhibitors for Heart Failure</h2>
       <p className="context">
-        SGLT2 inhibitors (empagliflozin, dapagliflozin) have transformed heart 
-        failure management, reducing hospitalizations and CV death regardless of 
+        SGLT2 inhibitors (empagliflozin, dapagliflozin) have transformed heart
+        failure management, reducing hospitalizations and CV death regardless of
         diabetes status.
       </p>
+      <MiniARRChart
+        data={SGLT2I_DATA}
+        unit="months"
+        maxTime={3}
+        label="ARR over time — CV death or worsening HF"
+      />
       <div className="ttb-results">
         <h3>TTB Estimates (CV Death or Worsening HF)</h3>
         <table>

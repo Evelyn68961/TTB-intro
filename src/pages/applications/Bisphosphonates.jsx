@@ -1,11 +1,25 @@
+import MiniARRChart from '../../components/MiniARRChart';
+
+const BISPHOSPHONATES_DATA = [
+  { arr: 0.002, time: 3.3 },
+  { arr: 0.005, time: 6.5 },
+  { arr: 0.010, time: 12.4 },
+];
+
 function Bisphosphonates() {
   return (
     <section className="medication-section">
       <h2>Bisphosphonates for Osteoporosis</h2>
       <p className="context">
-        Bisphosphonates reduce fracture risk in postmenopausal women with 
+        Bisphosphonates reduce fracture risk in postmenopausal women with
         osteoporosis but involve burdens like GI side effects and administration requirements.
       </p>
+      <MiniARRChart
+        data={BISPHOSPHONATES_DATA}
+        unit="months"
+        maxTime={18}
+        label="ARR over time — Nonvertebral fracture prevention"
+      />
       <div className="ttb-results">
         <h3>TTB Estimates (Nonvertebral Fracture Prevention)</h3>
         <table>

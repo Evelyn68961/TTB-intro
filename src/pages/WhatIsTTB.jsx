@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import PatientComparison from '../components/PatientComparison';
 import SurvivalCurveDiagram, { THRESHOLDS } from '../components/SurvivalCurveDiagram';
+import TTBvsNNTVisual from '../components/TTBvsNNTVisual';
+import PopulationGrid from '../components/PopulationGrid';
 import './WhatIsTTB.css';
 
 export default function WhatIsTTB() {
@@ -69,40 +71,12 @@ export default function WhatIsTTB() {
                     />
                 </div>
                 <div>
-                    <p>Common ARR thresholds used in TTB research:</p>
-                    <table>
-                    <thead>
-                        <tr>
-                        <th>Threshold</th>
-                        <th>Interpretation</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                        <td>0.5% ARR</td>
-                        <td>1 in 200 patients benefits</td>
-                        </tr>
-                        <tr>
-                        <td>1.0% ARR</td>
-                        <td>1 in 100 patients benefits</td>
-                        </tr>
-                        <tr>
-                        <td>2.0% ARR</td>
-                        <td>1 in 50 patients benefits</td>
-                        </tr>
-                    </tbody>
-                    </table>
-                    <div className="ttb-result-callout" style={{ borderColor: selected.color, marginTop: '40px' }}>
+                    <PopulationGrid nnt={selected.nnt} color={selected.color} />
+                    <div className="ttb-result-callout" style={{ borderColor: selected.color }}>
                         <p>
                             At the <strong style={{ color: selected.color }}>{selected.label} ARR</strong> threshold,
                             treatment prevents 1 event per {selected.nnt} patients.
                         </p>
-                    </div>
-                    <div style={{marginTop: '40px'}}>
-                       <p>
-                            The choice of threshold depends on the clinical context — how serious is
-                            the outcome being prevented? What are the treatment burdens?
-                       </p> 
                     </div>
                 </div>
             </div>
@@ -111,33 +85,7 @@ export default function WhatIsTTB() {
 
         <section>
             <h2>TTB vs. Number Needed to Treat (NNT)</h2>
-            <p>
-            You may be familiar with <strong>NNT (Number Needed to Treat)</strong> —
-            another way to express treatment benefit. How does TTB differ?
-            </p>
-            <p>
-            <strong>NNT</strong> tells you: "We need to treat 50 patients for 5 years
-            to prevent one event."
-            </p>
-            <p>
-            <strong>TTB</strong> tells you: "Patients need to take this treatment for
-            at least 18 months before meaningful benefit emerges."
-            </p>
-            <p>
-            NNT is calculated at a fixed time point (often the end of a trial). It
-            treats benefit as if it accumulates evenly over time — which it doesn't.
-            In reality, survival curves for treatment and control groups start together
-            and gradually diverge. TTB captures this <em>trajectory</em> of benefit.
-            </p>
-            <p>Think of it this way:</p>
-            <ul>
-            <li>NNT answers: "How many people do we treat?"</li>
-            <li>TTB answers: "How long must each person wait?"</li>
-            </ul>
-            <p>
-            Both are useful. But for individual patient decisions — especially when
-            life expectancy is limited — TTB provides the missing piece.
-            </p>
+            <TTBvsNNTVisual />
         </section>
 
         <section>

@@ -95,8 +95,10 @@
 }
 
 .feature-card {
-  display: block;
-  padding: 24px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 22px 24px;
   background-color: #f8fafc;
   border: 1px solid #e2e8f0;
   border-radius: 10px;
@@ -111,16 +113,37 @@
   transform: translateY(-2px);
 }
 
+.card-icon-wrap {
+  flex: 0 0 auto;
+  width: 96px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-icon {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.card-text {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
 .feature-card h3 {
   font-size: 1.2rem;
   color: #1e3a5f;
-  margin: 0 0 8px 0;
+  margin: 0 0 6px 0;
 }
 
 .feature-card p {
   font-size: 0.95rem;
   color: #64748b;
   margin: 0;
+  line-height: 1.5;
 }
 
 /* Responsive */
